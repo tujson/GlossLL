@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:glossll/src/util/constants.dart';
+import 'package:gloss_ll/src/util/constants.dart';
 
 ThemeData buildThemeData(BuildContext context) {
   return ThemeData(

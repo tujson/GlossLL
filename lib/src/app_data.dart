@@ -1,4 +1,4 @@
-import 'package:glossll/src/util/theme_mode_manager.dart';
+import 'package:gloss_ll/src/util/theme_mode_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 

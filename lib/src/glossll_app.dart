@@ -1,8 +1,8 @@
-import 'package:glossll/src/app_data.dart';
-import 'package:glossll/src/modules/home/home_page.dart';
-import 'package:glossll/src/modules/settings/settings_page.dart';
-import 'package:glossll/src/util/theme_mode_manager.dart';
-import 'package:glossll/src/util/themes.dart';
+import 'package:gloss_ll/src/app_data.dart';
+import 'package:gloss_ll/src/modules/home/home_page.dart';
+import 'package:gloss_ll/src/modules/settings/settings_page.dart';
+import 'package:gloss_ll/src/util/theme_mode_manager.dart';
+import 'package:gloss_ll/src/util/themes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

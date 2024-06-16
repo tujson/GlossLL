@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:glossll/src/util/constants.dart';
+import 'package:gloss_ll/src/util/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ThemeModeManager extends ChangeNotifier {

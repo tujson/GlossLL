@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:glossll/src/app_data.dart';
-import 'package:glossll/src/util/constants.dart';
+import 'package:gloss_ll/src/app_data.dart';
+import 'package:gloss_ll/src/util/constants.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 class SettingsPage extends StatefulWidget {
