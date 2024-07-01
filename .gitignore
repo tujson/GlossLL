@@ -1,4 +1,5 @@
 assets/subtitles/*.srt
+lib/src/util/secrets.dart
 
 # Miscellaneous
 *.class
