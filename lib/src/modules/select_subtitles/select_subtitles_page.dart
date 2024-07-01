@@ -57,10 +57,13 @@ class _SelectSubtitlesPageState extends State<SelectSubtitlesPage> {
                 return ListTile(
                   title: Text(srtFileNames[index]),
                   onTap: () {
-                    Navigator.pushNamed(context, "/configure-subtitles",
-                        arguments: ConfigurePlaybackPageArguments(
-                            srtPath:
-                                "$_assetsSubtitlesPath${srtFileNames[index]}"));
+                    Navigator.pushNamed(
+                      context,
+                      "/configure-subtitles",
+                      arguments: ConfigurePlaybackPageArguments(
+                        srtPath: "$_assetsSubtitlesPath${srtFileNames[index]}",
+                      ),
+                    );
                   },
                 );
               },
