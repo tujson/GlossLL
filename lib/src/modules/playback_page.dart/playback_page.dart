@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:gloss_ll/src/models/subtitle.dart';
 
 class PlaybackPageArguments {
-  final String srtPath;
+  final List<Subtitle> subtitles;
 
-  PlaybackPageArguments({required this.srtPath});
+  PlaybackPageArguments({required this.subtitles});
 }
 
 class PlaybackPage extends StatefulWidget {
@@ -25,8 +26,23 @@ class _PlaybackPageState extends State<PlaybackPage> {
           padding: const EdgeInsets.all(12.0),
           child: Column(
             children: [
+              IconButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, "/select-subtitles");
+                },
+                icon: const Icon(
+                  Icons.chevron_left,
+                ),
+              ),
               const Text("PlaybackPage"),
               Text("Args: ${widget.args}"),
+              ListView.builder(
+                shrinkWrap: true,
+                itemCount: widget.args.subtitles.length,
+                itemBuilder: (context, index) {
+                  return Text(widget.args.subtitles[index].contents + "\n");
+                },
+              ),
             ],
           ),
         ),
