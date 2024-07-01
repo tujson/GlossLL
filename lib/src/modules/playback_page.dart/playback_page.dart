@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:gloss_ll/src/models/subtitle.dart';
 
@@ -17,9 +19,34 @@ class PlaybackPage extends StatefulWidget {
 }
 
 class _PlaybackPageState extends State<PlaybackPage> {
+  final Stopwatch _stopwatch = Stopwatch();
+  late Timer _t;
+  int _currSubtitleIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _stopwatch.reset();
+    _t = Timer.periodic(const Duration(milliseconds: 100), (timer) {
+      // TODO: Don't call setState... Use Provider to re-render specific components.
+      setState(() {
+        for (var i = _currSubtitleIndex;
+            i < widget.args.subtitles.length;
+            i++) {
+          var potentialSubtitle = widget.args.subtitles[i];
+          if (potentialSubtitle.startTime < _stopwatch.elapsedMilliseconds &&
+              _stopwatch.elapsedMilliseconds < potentialSubtitle.endTime) {
+            _currSubtitleIndex = i;
+            break;
+          }
+        }
+      });
+    });
+    _currSubtitleIndex = 0;
+  }
+
   @override
   Widget build(BuildContext context) {
-    widget.args;
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -35,13 +62,18 @@ class _PlaybackPageState extends State<PlaybackPage> {
                 ),
               ),
               const Text("PlaybackPage"),
-              Text("Args: ${widget.args}"),
-              ListView.builder(
-                shrinkWrap: true,
-                itemCount: widget.args.subtitles.length,
-                itemBuilder: (context, index) {
-                  return Text(widget.args.subtitles[index].contents + "\n");
+              Text(_stopwatch.elapsedMilliseconds.toString()),
+              Text(
+                widget.args.subtitles[_currSubtitleIndex].contents,
+                style: const TextStyle(
+                  fontSize: 24.0,
+                ),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  _stopwatch.isRunning ? _stopwatch.stop() : _stopwatch.start();
                 },
+                child: const Text("Toggle Plaback"),
               ),
             ],
           ),
