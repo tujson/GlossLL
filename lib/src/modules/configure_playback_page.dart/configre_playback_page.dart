@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gloss_ll/src/models/subtitle.dart';
@@ -20,6 +22,8 @@ class ConfigurePlaybackPage extends StatefulWidget {
 }
 
 class _ConfigurePlaybackPageState extends State<ConfigurePlaybackPage> {
+  final Random _random = Random();
+
   @override
   Widget build(BuildContext context) {
     widget.args;
@@ -46,11 +50,19 @@ class _ConfigurePlaybackPageState extends State<ConfigurePlaybackPage> {
 
                 List<Subtitle> subtitles = _extractSubtitles(srtContents);
 
+                // TODO: Send API request to OpenAI to gloss subtitles according to user level.
+                List<Subtitle> filteredSubtitles = [];
+                for (var i = 0; i < subtitles.length; i++) {
+                  if (_random.nextBool()) {
+                    filteredSubtitles.add(subtitles[i]);
+                  }
+                }
+
                 Navigator.pushNamed(
                   context,
                   "/playback",
                   arguments: PlaybackPageArguments(
-                    subtitles: subtitles,
+                    subtitles: filteredSubtitles,
                   ),
                 );
               },

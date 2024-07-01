@@ -22,6 +22,7 @@ class _PlaybackPageState extends State<PlaybackPage> {
   final Stopwatch _stopwatch = Stopwatch();
   late Timer _t;
   int _currSubtitleIndex = 0;
+  bool _isShowSubtitle = false;
 
   @override
   void initState() {
@@ -37,8 +38,10 @@ class _PlaybackPageState extends State<PlaybackPage> {
           if (potentialSubtitle.startTime < _stopwatch.elapsedMilliseconds &&
               _stopwatch.elapsedMilliseconds < potentialSubtitle.endTime) {
             _currSubtitleIndex = i;
+            _isShowSubtitle = true;
             break;
           }
+          _isShowSubtitle = false;
         }
       });
     });
@@ -64,7 +67,9 @@ class _PlaybackPageState extends State<PlaybackPage> {
               const Text("PlaybackPage"),
               Text(_stopwatch.elapsedMilliseconds.toString()),
               Text(
-                widget.args.subtitles[_currSubtitleIndex].contents,
+                _isShowSubtitle
+                    ? widget.args.subtitles[_currSubtitleIndex].contents
+                    : "",
                 style: const TextStyle(
                   fontSize: 24.0,
                 ),
