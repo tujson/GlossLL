@@ -17,6 +17,9 @@ ThemeData buildThemeData(BuildContext context) {
             bodyColor: Colors.black,
           ),
     ),
+    listTileTheme: Theme.of(context).listTileTheme.copyWith(
+          textColor: Colors.black,
+        ),
     cardTheme: CardTheme(
       color: Colors.grey.shade100,
     ),
@@ -42,6 +45,10 @@ ThemeData buildDarkThemeData(BuildContext context) {
     cardTheme: CardTheme(
       color: Colors.grey.shade500,
     ),
-    colorScheme: ColorScheme.fromSwatch().copyWith(secondary: Colors.white),
+    listTileTheme: Theme.of(context).listTileTheme.copyWith(
+          textColor: Colors.white,
+        ),
+    colorScheme: ColorScheme.fromSwatch()
+        .copyWith(secondary: Colors.white, brightness: Brightness.dark),
   );
 }

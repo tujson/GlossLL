@@ -1,5 +1,8 @@
 import 'package:gloss_ll/src/app_data.dart';
+import 'package:gloss_ll/src/modules/configure_playback_page.dart/configre_playback_page.dart';
 import 'package:gloss_ll/src/modules/home/home_page.dart';
+import 'package:gloss_ll/src/modules/playback_page.dart/playback_page.dart';
+import 'package:gloss_ll/src/modules/select_subtitles/select_subtitles_page.dart';
 import 'package:gloss_ll/src/modules/settings/settings_page.dart';
 import 'package:gloss_ll/src/util/theme_mode_manager.dart';
 import 'package:gloss_ll/src/util/themes.dart';
@@ -37,6 +40,16 @@ class _GlossLlAppState extends State<GlossLlApp> {
                     var routes = <String, WidgetBuilder>{
                       "/": (context) => Container(),
                       "/home": (context) => const HomePage(),
+                      "/select-subtitles": (context) =>
+                          const SelectSubtitlesPage(),
+                      "/configure-subtitles": (context) =>
+                          ConfigurePlaybackPage(
+                            args: settings.arguments
+                                as ConfigurePlaybackPageArguments,
+                          ),
+                      "/playback": (context) => PlaybackPage(
+                            args: settings.arguments as PlaybackPageArguments,
+                          ),
                       "/settings": (context) => SettingsPage(),
                     };
                     return CupertinoPageRoute(

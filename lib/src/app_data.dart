@@ -6,7 +6,7 @@ class AppData {
   static late SharedPreferences sharedPreferences;
   static late ThemeModeManager themeModeManager;
 
-  static final AppData _appData = new AppData._internal();
+  static final AppData _appData = AppData._internal();
 
   static final RouteObserver<ModalRoute<void>> routeObserver =
       RouteObserver<ModalRoute<void>>();
