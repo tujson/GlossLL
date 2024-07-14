@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:gloss_ll/src/modules/configure_playback_page/configre_playback_page.dart';
+import 'package:gloss_ll/src/modules/configure_playback_page/configure_playback_page.dart';
 import 'package:gloss_ll/src/util/loading.dart';
 
 class SelectSubtitlesPage extends StatefulWidget {

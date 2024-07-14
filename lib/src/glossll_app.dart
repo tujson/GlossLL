@@ -1,5 +1,5 @@
 import 'package:gloss_ll/src/app_data.dart';
-import 'package:gloss_ll/src/modules/configure_playback_page/configre_playback_page.dart';
+import 'package:gloss_ll/src/modules/configure_playback_page/configure_playback_page.dart';
 import 'package:gloss_ll/src/modules/home/home_page.dart';
 import 'package:gloss_ll/src/modules/playback_page/playback_page.dart';
 import 'package:gloss_ll/src/modules/select_subtitles/select_subtitles_page.dart';
