@@ -28,50 +28,47 @@ class _ConfigurePlaybackPageState extends State<ConfigurePlaybackPage> {
   Widget build(BuildContext context) {
     widget.args;
     return Scaffold(
-        body: SafeArea(
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.all(12.0),
-        child: Column(
-          children: [
-            IconButton(
-              onPressed: () {
-                Navigator.pushNamed(context, "/select-subtitles");
-              },
-              icon: const Icon(
-                Icons.chevron_left,
-              ),
-            ),
-            const Text("ConfigurePlaybackPage"),
-            Text("Args: ${widget.args.srtPath}"),
-            ElevatedButton(
-              onPressed: () async {
-                String srtContents =
-                    await rootBundle.loadString(widget.args.srtPath);
+      appBar: AppBar(
+        title: const Text('Configure Playback'),
+      ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(12.0),
+          child: Column(
+            children: [
+              ElevatedButton(
+                onPressed: () async {
+                  String srtContents =
+                      await rootBundle.loadString(widget.args.srtPath);
 
-                List<Subtitle> subtitles = _extractSubtitles(srtContents);
+                  List<Subtitle> subtitles = _extractSubtitles(srtContents);
 
-                // TODO: Send API request to OpenAI to gloss subtitles according to user level.
-                List<Subtitle> filteredSubtitles = [];
-                for (var i = 0; i < subtitles.length; i++) {
-                  if (_random.nextBool()) {
-                    filteredSubtitles.add(subtitles[i]);
+                  // TODO: Send API request to OpenAI to gloss subtitles according to user level.
+                  List<Subtitle> filteredSubtitles = [];
+                  for (var i = 0; i < subtitles.length; i++) {
+                    if (_random.nextBool()) {
+                      filteredSubtitles.add(subtitles[i]);
+                    }
                   }
-                }
 
-                Navigator.pushNamed(
-                  context,
-                  "/playback",
-                  arguments: PlaybackPageArguments(
-                    subtitles: filteredSubtitles,
-                  ),
-                );
-              },
-              child: const Text("Start Playback"),
-            )
-          ],
+                  Navigator.pushNamed(
+                    context,
+                    "/playback",
+                    arguments: PlaybackPageArguments(
+                      subtitlesTitle: widget.args.srtPath
+                          .split("/")[2]
+                          .replaceAll(".srt", ""),
+                      subtitles: filteredSubtitles,
+                    ),
+                  );
+                },
+                child: const Text("Start Playback"),
+              )
+            ],
+          ),
         ),
       ),
-    ));
+    );
   }
 
   List<Subtitle> _extractSubtitles(String srtContents) {

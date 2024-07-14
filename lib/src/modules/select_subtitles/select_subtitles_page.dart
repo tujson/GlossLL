@@ -16,12 +16,14 @@ class _SelectSubtitlesPageState extends State<SelectSubtitlesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Select Subtitles'),
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(12.0),
           child: Column(
             children: [
-              const Text("Select subtitles"),
               _buildSubtitleList(),
             ],
           ),

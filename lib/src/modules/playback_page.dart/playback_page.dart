@@ -4,9 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:gloss_ll/src/models/subtitle.dart';
 
 class PlaybackPageArguments {
+  final String subtitlesTitle;
   final List<Subtitle> subtitles;
 
-  PlaybackPageArguments({required this.subtitles});
+  PlaybackPageArguments({
+    required this.subtitlesTitle,
+    required this.subtitles,
+  });
 }
 
 class PlaybackPage extends StatefulWidget {
@@ -19,6 +23,7 @@ class PlaybackPage extends StatefulWidget {
 }
 
 class _PlaybackPageState extends State<PlaybackPage> {
+  late String _subtitlesTitle;
   final Stopwatch _stopwatch = Stopwatch();
   late Timer _t;
   int _currSubtitleIndex = 0;
@@ -27,6 +32,9 @@ class _PlaybackPageState extends State<PlaybackPage> {
   @override
   void initState() {
     super.initState();
+
+    _subtitlesTitle = widget.args.subtitlesTitle;
+
     _stopwatch.reset();
     _t = Timer.periodic(const Duration(milliseconds: 100), (timer) {
       // TODO: Don't call setState... Use Provider to re-render specific components.
@@ -51,21 +59,17 @@ class _PlaybackPageState extends State<PlaybackPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text(_subtitlesTitle),
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(12.0),
           child: Column(
             children: [
-              IconButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, "/select-subtitles");
-                },
-                icon: const Icon(
-                  Icons.chevron_left,
-                ),
+              Text(
+                "Time: ${Duration(milliseconds: _stopwatch.elapsedMilliseconds)}",
               ),
-              const Text("PlaybackPage"),
-              Text(_stopwatch.elapsedMilliseconds.toString()),
               Text(
                 _isShowSubtitle
                     ? widget.args.subtitles[_currSubtitleIndex].contents

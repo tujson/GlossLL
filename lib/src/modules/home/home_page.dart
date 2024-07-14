@@ -11,6 +11,10 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('GlossLL'),
+        automaticallyImplyLeading: false,
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -20,8 +24,11 @@ class _HomePageState extends State<HomePage> {
                 ElevatedButton(
                   onPressed: () =>
                       Navigator.pushNamed(context, "/select-subtitles"),
+                  style: ElevatedButton.styleFrom(
+                      minimumSize: const Size(300, 80)),
                   child: const Text(
                     "Select Subtitles",
+                    style: TextStyle(fontSize: 24),
                   ),
                 )
               ],
