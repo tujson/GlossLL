@@ -169,14 +169,35 @@ class _ConfigurePlaybackPageState extends State<ConfigurePlaybackPage> {
           {
             "role": "user",
             "content": """
-From the given SRT file, generate a new SRT file by selecting to show only subtitles that a  ${_selectedProficiencyLevel.name} language learner would learn. 
+From the given SRT file, generate a modified SRT file by only including the subtitles that a ${_selectedProficiencyLevel.name} language learner would learn.
+Show at least 50% of the original subtitles.
 In the new subtitle chunk, provide in order:
 - The original chunk
 - The vocabulary word
-- If the subtitle language is Chinese, then include the pinyin for the vocabulary word.
-- If the language is not English, a translation in English.
+- If the subtitle language is Chinese, then include the pinyin for the vocabulary word. Otherwise leave this line blank.
+- If the language is not English, a translation in English. Otherwise leave this line blank.
 - The definition of the word. If the language is not English, then provide the definition in English.
-Strictly follow the SRT file format.
+Here's a template:
+[index of the subtitle]
+[subtitle time range as seen in the SRT file]
+[original text from SRT file]
+[highlighted vocabulary word in original SRT file's language] ([If the original language is Chinese, then the pinyin. Otherwise do not include this line.])
+[If the original language is not English, then a translation. Otherwise do not include this line.]
+[The vocabulary word's definition in English.]
+And here's an example:
+---
+1
+00:00:00,570 --> 00:00:01,183
+哈喽 大家好
+哈喽 (ha lou)
+Hello
+used as a greeting or to begin a phone conversation.
+
+2
+...
+---
+Strictly follow the SRT file format, such as the number, the time range, and separating chunks with two newline characters. You should be returning a long file, not just one subtitle.
+Only use the "\n\n" character to separate subtitle chunks. Otherwise use the "\n" character.
 \n\n
 $srtContents
 """
