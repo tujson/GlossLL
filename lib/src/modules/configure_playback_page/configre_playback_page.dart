@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:gloss_ll/src/models/subtitle.dart';
 import 'package:gloss_ll/src/modules/playback_page/playback_page.dart';
 import 'package:gloss_ll/src/util/constants.dart';
+import 'package:gloss_ll/src/util/loading.dart';
 import 'package:gloss_ll/src/util/secrets.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -27,8 +28,8 @@ class ConfigurePlaybackPage extends StatefulWidget {
 }
 
 class _ConfigurePlaybackPageState extends State<ConfigurePlaybackPage> {
-  final Random _random = Random();
-  ProficiencyLevel _selectedProficiencyLevel = ProficiencyLevel.beginner;
+  ProficiencyLevel _selectedProficiencyLevel = ProficiencyLevel.intermediate;
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -44,11 +45,15 @@ class _ConfigurePlaybackPageState extends State<ConfigurePlaybackPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ..._buildProficiencySelector(),
-              SizedBox(
+              const SizedBox(
                 height: 32,
               ),
               ElevatedButton(
                 onPressed: () async {
+                  setState(() {
+                    _isLoading = true;
+                  });
+
                   final String srtContents =
                       await rootBundle.loadString(widget.args.srtPath);
 
@@ -58,14 +63,7 @@ class _ConfigurePlaybackPageState extends State<ConfigurePlaybackPage> {
                   final List<Subtitle> subtitles =
                       _extractSubtitles(openAiGlossedSrt);
 
-                  // TODO: Send API request to OpenAI to gloss subtitles according to user level.
-                  final List<Subtitle> filteredSubtitles = [];
-                  for (var i = 0; i < subtitles.length; i++) {
-                    if (_random.nextBool()) {
-                      filteredSubtitles.add(subtitles[i]);
-                    }
-                  }
-
+                  _isLoading = false;
                   Navigator.pushNamed(
                     context,
                     "/playback",
@@ -73,11 +71,13 @@ class _ConfigurePlaybackPageState extends State<ConfigurePlaybackPage> {
                       subtitlesTitle: widget.args.srtPath
                           .split("/")[2]
                           .replaceAll(".srt", ""),
-                      subtitles: filteredSubtitles,
+                      subtitles: subtitles,
                     ),
                   );
                 },
-                child: const Text("Start Playback"),
+                child: _isLoading
+                    ? const Loading()
+                    : const Text("Configure Playback"),
               )
             ],
           ),
@@ -163,14 +163,32 @@ class _ConfigurePlaybackPageState extends State<ConfigurePlaybackPage> {
         HttpHeaders.contentTypeHeader: 'application/json'
       },
       body: jsonEncode({
+        // "model": "gpt-4o",
         "model": "gpt-3.5-turbo",
         "messages": [
-          {"role": "user", "content": "Generate a sample SRT file."}
+          {
+            "role": "user",
+            "content": """
+From the given SRT file, generate a new SRT file by selecting to show only subtitles that a  ${_selectedProficiencyLevel.name} language learner would learn. 
+In the new subtitle chunk, provide in order:
+- The original chunk
+- The vocabulary word
+- If the subtitle language is Chinese, then include the pinyin for the vocabulary word.
+- If the language is not English, a translation in English.
+- The definition of the word. If the language is not English, then provide the definition in English.
+Strictly follow the SRT file format.
+\n\n
+$srtContents
+"""
+          }
         ],
         "temperature": 0.7,
       }),
     );
-    return jsonDecode(httpResponse.body)["choices"][0]['message']['content'];
+    print('OpenAI response');
+    var responseBody = utf8.decode(httpResponse.bodyBytes);
+    print(responseBody);
+    return jsonDecode(responseBody)["choices"][0]['message']['content'];
   }
 
   int convertSrtTimeToMilis(String srtTime) {
