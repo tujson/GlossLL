@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -5,6 +7,8 @@ import 'package:flutter/services.dart';
 import 'package:gloss_ll/src/models/subtitle.dart';
 import 'package:gloss_ll/src/modules/playback_page/playback_page.dart';
 import 'package:gloss_ll/src/util/constants.dart';
+import 'package:gloss_ll/src/util/secrets.dart';
+import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
 class ConfigurePlaybackPageArguments {
@@ -48,8 +52,11 @@ class _ConfigurePlaybackPageState extends State<ConfigurePlaybackPage> {
                   final String srtContents =
                       await rootBundle.loadString(widget.args.srtPath);
 
+                  final String openAiGlossedSrt =
+                      await _getOpenAiResponse(srtContents);
+
                   final List<Subtitle> subtitles =
-                      _extractSubtitles(srtContents);
+                      _extractSubtitles(openAiGlossedSrt);
 
                   // TODO: Send API request to OpenAI to gloss subtitles according to user level.
                   final List<Subtitle> filteredSubtitles = [];
@@ -146,6 +153,24 @@ class _ConfigurePlaybackPageState extends State<ConfigurePlaybackPage> {
     });
 
     return subtitles;
+  }
+
+  Future<String> _getOpenAiResponse(String srtContents) async {
+    var httpResponse = await http.post(
+      Uri.parse('https://api.openai.com/v1/chat/completions'),
+      headers: {
+        HttpHeaders.authorizationHeader: 'Bearer $OPENAI_API_KEY',
+        HttpHeaders.contentTypeHeader: 'application/json'
+      },
+      body: jsonEncode({
+        "model": "gpt-3.5-turbo",
+        "messages": [
+          {"role": "user", "content": "Generate a sample SRT file."}
+        ],
+        "temperature": 0.7,
+      }),
+    );
+    return jsonDecode(httpResponse.body)["choices"][0]['message']['content'];
   }
 
   int convertSrtTimeToMilis(String srtTime) {
