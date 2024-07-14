@@ -59,30 +59,49 @@ class _PlaybackPageState extends State<PlaybackPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(_subtitlesTitle),
-      ),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(12.0),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                "Time: ${Duration(milliseconds: _stopwatch.elapsedMilliseconds)}",
-              ),
-              Text(
-                _isShowSubtitle
-                    ? widget.args.subtitles[_currSubtitleIndex].contents
-                    : "",
-                style: const TextStyle(
-                  fontSize: 24.0,
+              SizedBox(
+                height: 200,
+                child: Text(
+                  _isShowSubtitle
+                      ? widget.args.subtitles[_currSubtitleIndex].contents
+                      : "",
+                  style: const TextStyle(
+                    fontSize: 24.0,
+                  ),
                 ),
               ),
-              ElevatedButton(
-                onPressed: () {
-                  _stopwatch.isRunning ? _stopwatch.stop() : _stopwatch.start();
-                },
-                child: const Text("Toggle Plaback"),
+              const SizedBox(height: 16),
+              Row(
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, "/select-subtitles");
+                    },
+                    icon: const Icon(
+                      Icons.chevron_left,
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  ElevatedButton(
+                    onPressed: () {
+                      _stopwatch.isRunning
+                          ? _stopwatch.stop()
+                          : _stopwatch.start();
+                    },
+                    child: Text(
+                        "${_stopwatch.isRunning ? "Stop" : "Start"} Plaback"),
+                  ),
+                  const SizedBox(width: 64),
+                  Text(
+                    "Time: ${Duration(milliseconds: _stopwatch.elapsedMilliseconds).toString().split(".")[0]}",
+                  ),
+                ],
               ),
             ],
           ),

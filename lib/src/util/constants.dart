@@ -10,3 +10,5 @@ const DARK_MODE_OFF = "ThemeMode.light";
 class GlossLlColors {
   static const Color primaryColor = Color(0xFF76EE00);
 }
+
+enum ProficiencyLevel { beginner, intermediate, advanced }

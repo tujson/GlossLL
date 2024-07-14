@@ -23,6 +23,7 @@ ThemeData buildThemeData(BuildContext context) {
     cardTheme: CardTheme(
       color: Colors.grey.shade100,
     ),
+    iconTheme: const IconThemeData(color: Colors.black),
     colorScheme: ColorScheme.fromSwatch().copyWith(secondary: Colors.white),
   );
 }
@@ -48,6 +49,7 @@ ThemeData buildDarkThemeData(BuildContext context) {
     listTileTheme: Theme.of(context).listTileTheme.copyWith(
           textColor: Colors.white,
         ),
+    iconTheme: const IconThemeData(color: Colors.white),
     colorScheme: ColorScheme.fromSwatch()
         .copyWith(secondary: Colors.white, brightness: Brightness.dark),
   );

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gloss_ll/src/models/subtitle.dart';
 import 'package:gloss_ll/src/modules/playback_page.dart/playback_page.dart';
+import 'package:gloss_ll/src/util/constants.dart';
 import 'package:intl/intl.dart';
 
 class ConfigurePlaybackPageArguments {
@@ -23,6 +24,7 @@ class ConfigurePlaybackPage extends StatefulWidget {
 
 class _ConfigurePlaybackPageState extends State<ConfigurePlaybackPage> {
   final Random _random = Random();
+  ProficiencyLevel _selectedProficiencyLevel = ProficiencyLevel.beginner;
 
   @override
   Widget build(BuildContext context) {
@@ -35,16 +37,22 @@ class _ConfigurePlaybackPageState extends State<ConfigurePlaybackPage> {
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(12.0),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              ..._buildProficiencySelector(),
+              SizedBox(
+                height: 32,
+              ),
               ElevatedButton(
                 onPressed: () async {
-                  String srtContents =
+                  final String srtContents =
                       await rootBundle.loadString(widget.args.srtPath);
 
-                  List<Subtitle> subtitles = _extractSubtitles(srtContents);
+                  final List<Subtitle> subtitles =
+                      _extractSubtitles(srtContents);
 
                   // TODO: Send API request to OpenAI to gloss subtitles according to user level.
-                  List<Subtitle> filteredSubtitles = [];
+                  final List<Subtitle> filteredSubtitles = [];
                   for (var i = 0; i < subtitles.length; i++) {
                     if (_random.nextBool()) {
                       filteredSubtitles.add(subtitles[i]);
@@ -69,6 +77,53 @@ class _ConfigurePlaybackPageState extends State<ConfigurePlaybackPage> {
         ),
       ),
     );
+  }
+
+  List<Widget> _buildProficiencySelector() {
+    return <Widget>[
+      ListTile(
+        title: const Text('Beginner'),
+        leading: Radio<ProficiencyLevel>(
+          value: ProficiencyLevel.beginner,
+          groupValue: _selectedProficiencyLevel,
+          onChanged: (ProficiencyLevel? value) {
+            if (value != null) {
+              setState(() {
+                _selectedProficiencyLevel = value;
+              });
+            }
+          },
+        ),
+      ),
+      ListTile(
+        title: const Text('Intermediate'),
+        leading: Radio<ProficiencyLevel>(
+          value: ProficiencyLevel.intermediate,
+          groupValue: _selectedProficiencyLevel,
+          onChanged: (ProficiencyLevel? value) {
+            if (value != null) {
+              setState(() {
+                _selectedProficiencyLevel = value;
+              });
+            }
+          },
+        ),
+      ),
+      ListTile(
+        title: const Text('Advanced'),
+        leading: Radio<ProficiencyLevel>(
+          value: ProficiencyLevel.advanced,
+          groupValue: _selectedProficiencyLevel,
+          onChanged: (ProficiencyLevel? value) {
+            if (value != null) {
+              setState(() {
+                _selectedProficiencyLevel = value;
+              });
+            }
+          },
+        ),
+      ),
+    ];
   }
 
   List<Subtitle> _extractSubtitles(String srtContents) {
