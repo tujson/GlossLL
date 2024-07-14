@@ -81,7 +81,7 @@ class _PlaybackPageState extends State<PlaybackPage> {
                 children: [
                   IconButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, "/select-subtitles");
+                      Navigator.pop(context);
                     },
                     icon: const Icon(
                       Icons.chevron_left,
@@ -103,6 +103,7 @@ class _PlaybackPageState extends State<PlaybackPage> {
                   ),
                 ],
               ),
+              Text(widget.args.subtitlesTitle)
             ],
           ),
         ),
