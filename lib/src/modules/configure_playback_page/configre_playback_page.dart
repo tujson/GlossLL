@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gloss_ll/src/models/subtitle.dart';
-import 'package:gloss_ll/src/modules/playback_page.dart/playback_page.dart';
+import 'package:gloss_ll/src/modules/playback_page/playback_page.dart';
 import 'package:gloss_ll/src/util/constants.dart';
 import 'package:intl/intl.dart';
 
